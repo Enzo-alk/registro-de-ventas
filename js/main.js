@@ -1,5 +1,5 @@
 //IDEA el proyecto es un sistema de registro  de ventas.
-
+//arrays
 const vendedores = ["Enzo", "Marina", "Daniela", "Cano"];
 const productos = [
     { nombre: "producto-1", precio: 200 },
@@ -7,7 +7,7 @@ const productos = [
     { nombre: "producto-3", precio: 400 }
 ];
 
-
+//funcion para que el usuario  elija quien es el que va a registrar la venta
 function seleccionarVendedor() {
     const seleccion = parseInt(prompt("Elige el número del vendedor:\n1. Enzo\n2. Marina\n3. Daniela\n4. Cano"));
     if (seleccion >= 1 && seleccion <= vendedores.length) {
@@ -17,7 +17,7 @@ function seleccionarVendedor() {
         return seleccionarVendedor();
     }
 }
-
+//funcion para que el vendedor selecciones el producto
 function seleccionarProducto() {
     const seleccion = parseInt(prompt("Elige el número del producto:\n1. producto-1 ($200)\n2. producto-2 ($300)\n3. producto-3 ($400)"));
     if (seleccion >= 1 && seleccion <= productos.length) {
@@ -27,7 +27,7 @@ function seleccionarProducto() {
         return seleccionarProducto();
     }
 }
-
+//funcion para  seleccionar metodo de envio
 function metodoEnvio() {
     const envio = prompt("¿Es una venta con envío? (sí/no)").toLowerCase();
     if (envio === "sí" || envio === "si" || envio === "s") {
@@ -48,7 +48,7 @@ function metodoEnvio() {
         return metodoEnvio();
     }
 }
-
+//funcion para evitar numeros negativos 
 function validarPeso(peso) {
     return !isNaN(peso) && peso > 0;
 }
@@ -66,7 +66,7 @@ function obtenerCostoPorKg(zona) {
             return null;
     }
 }
-
+//funcion para iniciar el registrador de ventas y repetir el ciclo
 function iniciarSistema() {
     let continuar = true;
     while (continuar) {
@@ -78,5 +78,5 @@ function iniciarSistema() {
     }
     alert("Gracias por usar el sistema de registro de ventas.");
 }
-
+//llamada
 iniciarSistema();
