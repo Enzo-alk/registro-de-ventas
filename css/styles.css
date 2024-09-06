@@ -29,3 +29,7 @@ h1 {
     padding: 15px;
     border-radius: 8px;
 }
+.w-80 {
+    width: 80%; /* El ancho será del 80% */
+    margin: 0 auto; /* Centra horizontalmente */
+}

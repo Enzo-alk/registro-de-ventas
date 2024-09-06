@@ -1,42 +1,41 @@
 //IDEA el proyecto es un sistema de registro  de ventas.
 // Definición de productos
-const productos = [
-    { id: 1, nombre: 'Combo Emprendedor 1', precio: 15000 },
-    { id: 2, nombre: 'Combo Emprendedor 2', precio: 16000 },
-    { id: 3, nombre: 'Combo Emprendedor 3', precio: 17000 },
-    { id: 4, nombre: 'Combo Emprendedor 4', precio: 18000 },
-    { id: 5, nombre: 'Combo Emprendedor 5', precio: 19000 },
-    { id: 6, nombre: 'Combo Emprendedor 6', precio: 20000 },
-    { id: 7, nombre: 'Combo Emprendedor 7', precio: 21000 },
-    { id: 8, nombre: 'Combo Emprendedor 8', precio: 22000 },
-    { id: 9, nombre: 'Combo Emprendedor 9', precio: 23000 },
-    { id: 10, nombre: 'Combo Emprendedor 10', precio: 24000 },
-];
+// Cargar productos desde archivo JSON usando fetch
+// IDEA el proyecto es un sistema de registro de ventas.
 
-// Agregar productos al select
-const productoSelect = document.getElementById('producto');
-productos.forEach(producto => {
-    let option = document.createElement('option');
-    option.value = producto.id;
-    option.text = `${producto.nombre} - $${producto.precio}`;
-    productoSelect.appendChild(option);
-});
+// Cargar productos desde archivo JSON usando fetch
+fetch('../db/data.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al cargar los productos');
+        }
+        return response.json();
+    })
+    .then(productos => {
+        // Agregar productos al select
+        const productoSelect = document.getElementById('producto');
+        productos.forEach(producto => {
+            let option = document.createElement('option');
+            option.value = producto.id;
+            option.text = `${producto.nombre} - $${producto.precio}`;
+            productoSelect.appendChild(option);
+        });
+
+        // Escuchar cambios en el combo o método de pago para calcular y mostrar el precio final
+        document.getElementById('producto').addEventListener('change', () => actualizarPrecioFinal(productos));
+        document.getElementById('pago').addEventListener('change', () => actualizarPrecioFinal(productos));
+    })
+    .catch(error => {
+        console.error('Hubo un problema con la carga de los productos:', error);
+        Swal.fire('Error', 'Error al cargar los productos. Intente nuevamente.', 'error');
+    });
 
 // Habilitar el botón de registrar venta inicialmente
 const registrarVentaBtn = document.getElementById('ventaForm').querySelector('button[type="submit"]');
 registrarVentaBtn.disabled = false;
 
-// Escuchar cambios en el combo o método de pago para calcular y mostrar el precio final
-document.getElementById('producto').addEventListener('change', actualizarPrecioFinal);
-document.getElementById('pago').addEventListener('change', actualizarPrecioFinal);
-
-// Escuchar cambios en la modalidad de envío para mostrar datos adicionales
-document.getElementById('envio').addEventListener('change', function() {
-    const modalidadEnvio = this.value;
-    mostrarFormularioAdicional(modalidadEnvio);
-});
-
-function actualizarPrecioFinal() {
+// Función para actualizar el precio final
+function actualizarPrecioFinal(productos) {
     const productoId = parseInt(document.getElementById('producto').value);
     const modalidadPago = parseInt(document.getElementById('pago').value);
 
@@ -53,42 +52,55 @@ function actualizarPrecioFinal() {
 document.getElementById('ventaForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // Obtener valores del formulario
     const vendedor = document.getElementById('vendedor').value;
     const productoId = parseInt(document.getElementById('producto').value);
     const modalidadPago = parseInt(document.getElementById('pago').value);
     const modalidadEnvio = document.getElementById('envio').value;
 
     if (!vendedor || !productoId || !modalidadPago || !modalidadEnvio) {
-        alert('Por favor, complete todos los campos antes de registrar la venta.');
+        Swal.fire('Error', 'Por favor, complete todos los campos antes de registrar la venta.', 'error');
         return;
     }
 
-    // Obtener el producto seleccionado
-    const productoSeleccionado = productos.find(producto => producto.id === productoId);
-    const precioFinal = productoSeleccionado.precio * (modalidadPago / 100);
+    fetch('../db/data.json')
+        .then(response => response.json())
+        .then(productos => {
+            const productoSeleccionado = productos.find(producto => producto.id === productoId);
+            const precioFinal = productoSeleccionado.precio * (modalidadPago / 100);
+            const datosAdicionales = obtenerDatosAdicionales(modalidadEnvio);
 
-    // Obtener los datos adicionales según la modalidad de entrega
-    const datosAdicionales = obtenerDatosAdicionales(modalidadEnvio);
+            const venta = {
+                vendedor: vendedor,
+                producto: productoSeleccionado.nombre,
+                precioFinal: precioFinal,
+                envio: modalidadEnvio,
+                datosAdicionales: datosAdicionales
+            };
 
-    // Crear un objeto de venta
-    const venta = {
-        vendedor: vendedor,
-        producto: productoSeleccionado.nombre,
-        precioFinal: precioFinal,
-        envio: modalidadEnvio,
-        datosAdicionales: datosAdicionales
-    };
+            guardarVentaLocalStorage(venta);
+            
+            // Reemplazar alert con SweetAlert2
+            Swal.fire({
+                title: 'Venta Registrada',
+                text: 'La venta ha sido registrada con éxito.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
 
-    // Guardar la venta en localStorage
-    guardarVentaLocalStorage(venta);
+            // Reiniciar el formulario
+            document.getElementById('ventaForm').reset();
+            document.getElementById('precioFinal').value = '';
+        })
+        .catch(error => {
+            console.error('Error al registrar la venta:', error);
+            Swal.fire('Error', 'Error al registrar la venta. Intente nuevamente.', 'error');
+        });
+});
 
-    // Mostrar un mensaje de confirmación
-    alert('Venta registrada con éxito');
-
-    // Reiniciar el formulario
-    document.getElementById('ventaForm').reset();
-    document.getElementById('precioFinal').value = '';
+// Escuchar cambios en la modalidad de entrega para mostrar el formulario adicional
+document.getElementById('envio').addEventListener('change', function () {
+    const modalidadEnvio = this.value;
+    mostrarFormularioAdicional(modalidadEnvio);
 });
 
 function mostrarFormularioAdicional(modalidadEnvio) {

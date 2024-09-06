@@ -6,67 +6,50 @@
     <title>Registro de Ventas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/styles.css">
-    <script defer src="./js/main.js"></script>
+   
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">Registro de Ventas</h1>
-        <form id="ventaForm">
-            <!-- selccion del vendedor -->
-            <div class="mb-3">
-                <label for="vendedor" class="form-label">Vendedor:</label>
-                <select class="form-select" id="vendedor" required>
-                    <option value="">Seleccione un vendedor</option>
-                    <option value="Enzo">Enzo</option>
-                    <option value="Marina">Marina</option>
-                    <option value="Cano">Cano</option>
-                    <option value="Daniela">Daniela</option>
-                </select>
-            </div>
-
-            <!-- Aca se  selecciona el combo, metodo de pago -->
-            <div class="mb-3 d-flex align-items-center">
-                <div class="me-3">
-                    <label for="producto" class="form-label">Combo:</label>
-                    <select class="form-select" id="producto" required>
-                        <option value="">Seleccione un combo</option>
-                    </select>
-                </div>
-
-                <div class="me-3">
-                    <label for="pago" class="form-label">Método de Pago:</label>
-                    <select class="form-select" id="pago" required>
-                        <option value="100">Precio de lista</option>
-                        <option value="90">Transferencia (-10%)</option>
-                        <option value="80">Efectivo (-20%)</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="precioFinal" class="form-label">Precio Final:</label>
-                    <input type="text" id="precioFinal" class="form-control" readonly>
-                </div>
-            </div>
-
-            <!-- Aca se selecciona la modalidad de entrega -->
-            <div class="mb-3">
-                <label for="envio" class="form-label">Modalidad de entrega:</label>
-                <select class="form-select" id="envio" required>
-                    <option value="">Seleccione la modalidad de entrega</option>
-                    <option value="B">Envío a sucursal</option>
-                    <option value="A">Envío a domicilio</option>
-                    <option value="C">Retiro por local comercial</option>
-                </select>
-            </div>
-
-            <!-- espacio para datos adicionales de acuerdo al metodo de entrega que elija  -->
-            <div id="datosAdicionales" class="mb-3">
-                
-            </div>
-
-            <!-- boton para registrar la venta- preguntar al profesor posibilidades de conectar con google sheets -->
-            <button type="submit" class="btn btn-primary" disabled>Registrar Venta</button>
-        </form>
+   <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Menú Principal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+       
     </div>
+</nav>
+
+<!-- Main -->
+<div class="container mt-5">
+    <h1 class="text-center">¿Que accion deseas realizar?</h1>
+    <main class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <img src="./assets/accion-vender.jpg" class="card-img-top" alt="Registrar Venta">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Registrar Venta</h5>
+                    <p class="card-text">Accede al formulario para registrar una nueva venta en nuestro sistema.</p>
+                    <a href="./html/registrarventas.html" class="btn btn-primary">Registrar Venta</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <img src="./assets/accion-consultar.jpg" class="card-img-top" alt="Consultar Ventas">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Consultar Ventas</h5>
+                    <p class="card-text">Consulta los registros de ventas realizadas anteriormente en el sistema.</p>
+                    <a href="./html/consultarventas.html" class="btn btn-secondary">Consultar Ventas</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3">
+    <p class="mb-0">&copy; Registro de ventas.</p>
+</footer>
 </body>
 </html>
