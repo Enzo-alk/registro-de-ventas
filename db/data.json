@@ -1,6 +1,6 @@
  [
     { "id": 1, "nombre": "Combo Emprendedor 1", "precio": 15000 },
-    { "id": 2, "nombre": "Combo Emprendedor 1", "precio": 16000 },
+    { "id": 2, "nombre": "Combo Emprendedor 2", "precio": 16000 },
     { "id": 3, "nombre": "Combo Emprendedor 3", "precio": 17000 },
     { "id": 4, "nombre": "Combo Emprendedor 4", "precio": 18000 },
     { "id": 5, "nombre": "Combo Emprendedor 5", "precio": 19000 },

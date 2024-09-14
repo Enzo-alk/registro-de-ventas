@@ -1,8 +1,4 @@
 //IDEA el proyecto es un sistema de registro  de ventas.
-// Definición de productos
-// Cargar productos desde archivo JSON usando fetch
-// IDEA el proyecto es un sistema de registro de ventas.
-
 // Cargar productos desde archivo JSON usando fetch
 fetch('../db/data.json')
     .then(response => {
@@ -12,7 +8,7 @@ fetch('../db/data.json')
         return response.json();
     })
     .then(productos => {
-        // Agregar productos al select
+        // Agregar productos al seleccionador
         const productoSelect = document.getElementById('producto');
         productos.forEach(producto => {
             let option = document.createElement('option');
@@ -21,7 +17,7 @@ fetch('../db/data.json')
             productoSelect.appendChild(option);
         });
 
-        // Escuchar cambios en el combo o método de pago para calcular y mostrar el precio final
+        // Escuchar cambios en el combo o metodo de pago para calcular y mostrar el precio final
         document.getElementById('producto').addEventListener('change', () => actualizarPrecioFinal(productos));
         document.getElementById('pago').addEventListener('change', () => actualizarPrecioFinal(productos));
     })
@@ -30,7 +26,7 @@ fetch('../db/data.json')
         Swal.fire('Error', 'Error al cargar los productos. Intente nuevamente.', 'error');
     });
 
-// Habilitar el botón de registrar venta inicialmente
+// Habilitar el boton de registrar venta inicialmente
 const registrarVentaBtn = document.getElementById('ventaForm').querySelector('button[type="submit"]');
 registrarVentaBtn.disabled = false;
 
@@ -48,7 +44,7 @@ function actualizarPrecioFinal(productos) {
     }
 }
 
-// Escuchar el envío del formulario
+// Escuchar el envoo del formulario
 document.getElementById('ventaForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -59,6 +55,11 @@ document.getElementById('ventaForm').addEventListener('submit', function(event) 
 
     if (!vendedor || !productoId || !modalidadPago || !modalidadEnvio) {
         Swal.fire('Error', 'Por favor, complete todos los campos antes de registrar la venta.', 'error');
+        return;
+    }
+
+    // Validaciones de los campos adicionales
+    if (!validarDatosAdicionales()) {
         return;
     }
 
@@ -97,7 +98,43 @@ document.getElementById('ventaForm').addEventListener('submit', function(event) 
         });
 });
 
-// Escuchar cambios en la modalidad de entrega para mostrar el formulario adicional
+// Validar campos adicionales solo permitir string y numeros segun donde corresponda
+function validarDatosAdicionales() {
+    const nombre = document.getElementById('nombre').value;
+    const provincia = document.getElementById('provincia') ? document.getElementById('provincia').value : '';
+    const ciudad = document.getElementById('ciudad').value;
+    const codigoPostal = document.getElementById('codigoPostal').value;
+    const whatsapp = document.getElementById('whatsapp').value;
+    const correo = document.getElementById('correo') ? document.getElementById('correo').value : '';
+
+    if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+        Swal.fire('Error', 'El nombre solo puede contener letras y espacios.', 'error');
+        return false;
+    }
+    if (provincia && !/^[a-zA-Z\s]+$/.test(provincia)) {
+        Swal.fire('Error', 'La provincia solo puede contener letras y espacios.', 'error');
+        return false;
+    }
+    if (!/^[a-zA-Z\s]+$/.test(ciudad)) {
+        Swal.fire('Error', 'La ciudad solo puede contener letras y espacios.', 'error');
+        return false;
+    }
+    if (!/^\d{4}$/.test(codigoPostal)) {
+        Swal.fire('Error', 'El código postal debe tener 4 dígitos.', 'error');
+        return false;
+    }
+    if (!/^\d{10}$/.test(whatsapp)) {
+        Swal.fire('Error', 'El número de WhatsApp debe tener 10 dígitos.', 'error');
+        return false;
+    }
+    if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+        Swal.fire('Error', 'El correo debe tener un formato válido (e.g., correo@dominio.com).', 'error');
+        return false;
+    }
+    return true;
+}
+
+// Mostrar campos adicionales dependiendo de la modalidad de envio
 document.getElementById('envio').addEventListener('change', function () {
     const modalidadEnvio = this.value;
     mostrarFormularioAdicional(modalidadEnvio);
@@ -105,7 +142,7 @@ document.getElementById('envio').addEventListener('change', function () {
 
 function mostrarFormularioAdicional(modalidadEnvio) {
     const datosAdicionalesDiv = document.getElementById('datosAdicionales');
-    datosAdicionalesDiv.innerHTML = ''; // Limpiar cualquier formulario anterior
+    datosAdicionalesDiv.innerHTML = ''; // Limpiar cualquier formulario viejito
 
     if (modalidadEnvio === 'A' || modalidadEnvio === 'B') {
         datosAdicionalesDiv.innerHTML = `
@@ -123,11 +160,11 @@ function mostrarFormularioAdicional(modalidadEnvio) {
             </div>
             <div class="mb-3">
                 <label for="codigoPostal" class="form-label">Código Postal:</label>
-                <input type="text" class="form-control" id="codigoPostal" required>
+                <input type="text" class="form-control" id="codigoPostal" maxlength="4" pattern="\\d*" required>
             </div>
             <div class="mb-3">
                 <label for="whatsapp" class="form-label">WhatsApp:</label>
-                <input type="text" class="form-control" id="whatsapp" required>
+                <input type="text" class="form-control" id="whatsapp" maxlength="10" pattern="\\d*" required>
             </div>
         `;
 
@@ -139,11 +176,11 @@ function mostrarFormularioAdicional(modalidadEnvio) {
                 </div>
                 <div class="mb-3">
                     <label for="altura" class="form-label">Altura:</label>
-                    <input type="text" class="form-control" id="altura" required>
+                    <input type="text" class="form-control" id="altura" pattern="\\d*" required>
                 </div>
                 <div class="mb-3">
                     <label for="piso" class="form-label">Piso:</label>
-                    <input type="text" class="form-control" id="piso">
+                    <input type="text" class="form-control" id="piso" pattern="\\d*">
                 </div>
                 <div class="mb-3">
                     <label for="departamento" class="form-label">Departamento:</label>
@@ -167,7 +204,7 @@ function mostrarFormularioAdicional(modalidadEnvio) {
             </div>
             <div class="mb-3">
                 <label for="whatsapp" class="form-label">WhatsApp:</label>
-                <input type="text" class="form-control" id="whatsapp" required>
+                <input type="text" class="form-control" id="whatsapp" maxlength="10" pattern="\\d*" required>
             </div>
         `;
     }

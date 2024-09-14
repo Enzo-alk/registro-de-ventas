@@ -10,19 +10,20 @@
 </head>
 <body>
 
-       <!-- Navbar -->
-   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="../index.html">Menú Principal</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">Menú Principal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
     </nav>
+
     <div class="container mt-5">
         <h1 class="text-center">Registro de Ventas</h1>
         <form id="ventaForm">
-            <!-- selccion del vendedor -->
+            <!-- Selección del vendedor -->
             <div class="mb-3">
                 <label for="vendedor" class="form-label">Vendedor:</label>
                 <select class="form-select" id="vendedor" required>
@@ -34,7 +35,7 @@
                 </select>
             </div>
 
-            <!-- Aca se  selecciona el combo, metodo de pago -->
+            <!-- Selección del combo, método de pago -->
             <div class="mb-3 d-flex align-items-center">
                 <div class="me-3">
                     <label for="producto" class="form-label">Combo:</label>
@@ -58,7 +59,7 @@
                 </div>
             </div>
 
-            <!-- Aca se selecciona la modalidad de entrega -->
+            <!-- Selección de la modalidad de entrega -->
             <div class="mb-3">
                 <label for="envio" class="form-label">Modalidad de entrega:</label>
                 <select class="form-select" id="envio" required>
@@ -69,16 +70,15 @@
                 </select>
             </div>
 
-            <!-- espacio para datos adicionales de acuerdo al metodo de entrega que elija  -->
-            <div id="datosAdicionales" class="mb-3">
-                
-            </div>
+            <!-- Campos adicionales dependiendo de la modalidad de entrega -->
+            <div id="datosAdicionales" class="mb-3"></div>
 
-            <!-- boton para registrar la venta- preguntar al profesor posibilidades de conectar con google sheets -->
+            <!-- Botón para registrar la venta -->
             <button type="submit" class="btn btn-primary" disabled>Registrar Venta</button>
         </form>
     </div>
-    <!-- sweetalert-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
